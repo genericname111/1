@@ -5,14 +5,14 @@ char name[100];
 
 int main()
 {
-    printf("file name");
+    printf("file name ");
 scanf("%s", name);
 
 	FILE *file;
 	file = fopen(name, "wb");
-printf("size");
+printf("size ");
 	scanf("%d", &b);
-	printf("contents")
+	printf("contents ");
 	for (int i = 0; i < b; i++)
 	{
 		scanf("%d", &a);
@@ -28,7 +28,7 @@ printf("size");
 	}
 	fclose (file);
 	printf("\n");
-	printf("what number");
+	printf("what number ");
 	scanf("%d", &c);
 	file = fopen(name, "rb");
 	for (int i = 0; i < b; i++)
@@ -39,7 +39,7 @@ printf("size");
 	}
 	printf("%d\n", d);
 	fclose (file);
-	printf("move by how much");
+	printf("move by how much ");
 	scanf("%d", &e);
 	file = fopen(name, "rb");
 	f = (int*) malloc(b * sizeof(int));
