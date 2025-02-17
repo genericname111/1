@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+int a, b, c, d, e, *f;
+char name[100];
+
+int main()
+{
+scanf("%s", name);
+
+	FILE *file;
+	file = fopen(name, "wb");
+
+	scanf("%d", &b);
+	for (int i = 0; i < b; i++)
+	{
+		scanf("%d", &a);
+		fwrite(&a, sizeof(int), 1, file);
+	}
+	fclose (file);
+		file = fopen(name, "rb");
+		for (int i = 0; i < b; i++)
+	{
+	
+		fread(&a, sizeof(int), 1, file);
+		printf("%d ", a);
+	}
+	fclose (file);
+	printf("\n");
+	scanf("%d", &c);
+	file = fopen(name, "rb");
+	for (int i = 0; i < b; i++)
+	{
+		fread(&a, sizeof(int), 1, file);
+		if (a % c == 0)
+			d++;
+	}
+	printf("%d\n", d);
+	fclose (file);
+	scanf("%d", &e);
+	file = fopen(name, "rb");
+	f = (int*) malloc(b * sizeof(int));
+	for(int i = 0; i < b; i++)
+	{	fread(&a, sizeof(int), 1, file);
+		f[i] = a;
+	}
+	fclose (file);
+	for(int i = 0; i < e; i++)
+	{
+		a = f[b-1];
+
+		for(int j = b; j > 0; j--)
+		{
+
+			f[j] = f[j-1];
+		}
+		f[0] = a;
+	}
+	for(int i = 0; i < b; i++)
+	{
+		a = f[i];
+		for(int j = i+1; j < b; j++)
+		{
+			if (f[j] == a)
+				f[j] = 0;
+		}
+	}
+//	for(int j = 0; j < b; j++)
+//		printf ("%d ", f[j]);
+file = fopen(name, "wb");
+for(int j = 0; j < b; j++)
+fwrite(&f[j], sizeof(int), 1, file);
+fclose (file);
+	file = fopen(name, "rb");
+	for (int i = 0; i < b; i++)
+	{
+		fread(&a, sizeof(int), 1, file);
+		printf("%d ", a );
+	}
+
+	return 0;
+}
