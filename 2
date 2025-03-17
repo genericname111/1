@@ -65,13 +65,14 @@ int main(int argc, char* argv[])
     int size;
     const char* filename = argv[1];
     scanf("%d", &size);
+   buffer  = in(filename, size);
     int power = 0;
     while (buffer)
     {
         power++;
         buffer /= 10;
     }
-  FILE* f = fopen(filename, "r");
+   FILE* f = fopen(filename, "r");
    out(filename, size);
    int sum = suum(filename, size);
    printf("\n%d\n", sum/size);
