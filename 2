@@ -1,0 +1,76 @@
+#include <stdio.h>
+void swp (const char* filename, int power)
+{
+    int buffer;
+    int buffer3;
+
+    FILE* f = fopen(filename, "r");
+fscanf(f, "%d", &buffer);
+fclose(f);
+f = fopen(filename, "r+");
+fseek(f, power* (-1) - 1, SEEK_END);
+fscanf(f, "%d", &buffer3);
+fseek(f, power* (-1) - 1, SEEK_END);
+fprintf(f, "%d", buffer);
+fseek(f, 0, SEEK_SET);
+fprintf(f, "%d", buffer3);
+fclose(f);
+}
+int suum(const char *filename, int size)
+{
+    int sum = 0;
+    int buffer;
+ FILE*   f = fopen(filename, "r");
+    for (int i = 0; i < size; i++)
+    {
+        fscanf(f, "%d", &buffer);
+        sum += buffer;
+
+    }
+    fclose(f);
+    return sum;
+}
+
+int main(int argc, char* argv[])
+{
+    int buffer;
+    int size;
+    int buffer3;
+    const char* filename = argv[1];
+    scanf("%d", &size);
+    FILE *f = fopen(filename, "w");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &buffer);
+        fprintf(f, "%d ", buffer);
+        buffer3 = buffer;
+    }
+    fclose(f);
+    int power = 0;
+    while (buffer3)
+    {
+        power++;
+        buffer3 /= 10;
+    }
+   f = fopen(filename, "r");
+   for (int i = 0; i < size; i++)
+   {
+       fscanf(f, "%d ", &buffer);
+       printf("%d ", buffer);
+       
+   }
+   fclose(f);
+   int sum = suum(filename, size);
+   printf("\n%d ", sum/size);
+   swp(filename, power);
+/*   f = fopen(filename, "r");
+   for (int i = 0; i < size; i++)
+   {
+       fscanf(f, "%d ", &buffer);
+       printf("%d ", buffer);
+
+   }
+   fclose(f);*/
+   system("pause");
+    return 0;
+}
