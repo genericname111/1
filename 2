@@ -1,4 +1,32 @@
 #include <stdio.h>
+
+int in(const char* filename, int size)
+{
+    int buffer;
+    FILE* f = fopen(filename, "w");
+    for (int i = 0; i < size; i++)
+    {
+        scanf("%d", &buffer);
+        fprintf(f, "%d ", buffer);
+    }
+    fclose(f);
+    return buffer;
+}
+
+void out(const char* filename, int size)
+{
+    int buffer;
+ FILE*   f = fopen(filename, "r");
+    for (int i = 0; i < size; i++)
+    {
+        fscanf(f, "%d ", &buffer);
+        printf("%d ", buffer);
+
+    }
+    fclose(f);
+}
+
+
 void swp (const char* filename, int power)
 {
     int buffer;
@@ -35,42 +63,20 @@ int main(int argc, char* argv[])
 {
     int buffer;
     int size;
-    int buffer3;
     const char* filename = argv[1];
     scanf("%d", &size);
-    FILE *f = fopen(filename, "w");
-    for (int i = 0; i < size; i++)
-    {
-        scanf("%d", &buffer);
-        fprintf(f, "%d ", buffer);
-        buffer3 = buffer;
-    }
-    fclose(f);
     int power = 0;
-    while (buffer3)
+    while (buffer)
     {
         power++;
-        buffer3 /= 10;
+        buffer /= 10;
     }
    f = fopen(filename, "r");
-   for (int i = 0; i < size; i++)
-   {
-       fscanf(f, "%d ", &buffer);
-       printf("%d ", buffer);
-       
-   }
-   fclose(f);
+   out(filename, size);
    int sum = suum(filename, size);
-   printf("\n%d ", sum/size);
+   printf("\n%d\n", sum/size);
    swp(filename, power);
-/*   f = fopen(filename, "r");
-   for (int i = 0; i < size; i++)
-   {
-       fscanf(f, "%d ", &buffer);
-       printf("%d ", buffer);
-
-   }
-   fclose(f);*/
+   out(filename, size);
    system("pause");
     return 0;
 }
