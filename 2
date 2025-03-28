@@ -16,7 +16,7 @@ int in(const char* filename, int size)
 void out(const char* filename, int size)
 {
     int buffer;
-// FILE*   f = fopen(filename, "r");
+ FILE*   f = fopen(filename, "r");
     for (int i = 0; i < size; i++)
     {
         fscanf(f, "%d ", &buffer);
@@ -27,21 +27,73 @@ void out(const char* filename, int size)
 }
 
 
-void swp (const char* filename, int power)
+void swp (const char* filename, int power, int size)
 {
     int buffer;
+    int power1 = 0;
     int buffer3;
+    int buffer2;
+    char buffer4 = '0';
+   // char buffer5;
+    int k;
 
     FILE* f = fopen(filename, "r");
 fscanf(f, "%d", &buffer);
 fclose(f);
+buffer2 = buffer;
+while (buffer2)
+{
+    power1++;
+    buffer2 /= 10;
+}
 f = fopen(filename, "r+");
+for (int i = 0; i < power - power1; i++)
+{
+    fseek(f, 0,SEEK_END);
+    k = 0;
+   while (k < size)
+  {
+        fseek(f, -1, SEEK_CUR);
+        fscanf(f, "%c", &buffer4);
+        fseek(f, 0, SEEK_CUR);
+        fprintf(f, "%c", buffer4);
+        if (buffer4 == ' ')
+            k++;
+        fseek(f, -2, SEEK_CUR);
+    }
+}
 fseek(f, power* (-1) - 1, SEEK_END);
 fscanf(f, "%d", &buffer3);
 fseek(f, power* (-1) - 1, SEEK_END);
-fprintf(f, "%d", buffer);
+fprintf(f, "%d ", buffer);
+for (int i = 0; i < power1 - power; i++)
+{
+    fseek(f, 0, SEEK_SET);
+    k = 0;
+    while(k <= size)
+    {
+        fseek(f, 1, SEEK_CUR);
+        fscanf(f, "%c", &buffer4);
+        fseek(f, -2, SEEK_CUR);
+        fprintf(f, "%c", buffer4);
+        if (buffer4 == ' ')
+            k++;
+    }
+}
 fseek(f, 0, SEEK_SET);
-fprintf(f, "%d", buffer3);
+fprintf(f, "%d ", buffer3);
+if (power > power1)
+{
+    fseek(f, power * (-1) - 1 + power1, SEEK_END);
+    fprintf(f, " ");
+
+}
+fseek(f, -power + 3, SEEK_END);
+
+for (int i = 0; i < power-3; i++)
+{
+   fprintf(f, " ");
+}
 fclose(f);
 }
 int suum(const char *filename, int size)
@@ -72,11 +124,11 @@ int main(int argc, char* argv[])
         power++;
         buffer /= 10;
     }
-   FILE* f = fopen(filename, "r");
+ //  FILE* f = fopen(filename, "r");
    out(filename, size);
    int sum = suum(filename, size);
    printf("\n%d\n", sum/size);
-   swp(filename, power);
+   swp(filename, power, size);
    out(filename, size);
    system("pause");
     return 0;
