@@ -2,245 +2,121 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+
+typedef struct Node {
     int val;
     struct Node* next;
-};
+} Node;
 
-struct Node* top = NULL;
+Node* top = NULL;
+Node* top1 = NULL;
+Node* top2 = NULL;
 
-struct Node1 {
-    int val;
-    struct Node1* next;
-};
-struct Node1* top1 = NULL;
-
-struct Node2 {
-    int val;
-    struct Node2* next;
-};
-struct Node2* top2 = NULL;
-
-void push(int val) {
-
-    struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));
-
+void push(Node** top_ptr, int val) {
+    Node* ptr = (Node*)malloc(sizeof(Node));
     ptr->val = val;
-    if (top == NULL) {
-        ptr->next = NULL;  
-        top = ptr;        
-    }
-    else {
-      
-        ptr->next = top; 
-      top = ptr;       
-    }
-
-   
+    ptr->next = *top_ptr;
+    *top_ptr = ptr;
 }
 
-void push1(int val) {
-
-    struct Node1* ptr = (struct Node1*)malloc(sizeof(struct Node1));
-    
-    ptr->val = val;
-    if (top1 == NULL) {
-        ptr->next = NULL;
-        top1 = ptr;
-    }
-    else {
-
-        ptr->next = top1;
-        top1 = ptr;
-    }
-
-
-}
-void push2(int val) {
-
-    struct Node2* ptr = (struct Node2*)malloc(sizeof(struct Node2));
-
-    ptr->val = val;
-    if (top2 == NULL) {
-        ptr->next = NULL;
-        top2 = ptr;
-    }
-    else {
-
-        ptr->next = top2;
-        top2 = ptr;
-    }
-
-
-}
-int pop() {
-   
-    if (top == NULL) {
-      
-        return; 
-    }
-
-    
-    struct Node* temp1 = top;   
-    int temp = top->val;      
-
-    top = top->next;
-
-
-    free(temp1);
-
-    return temp;
-}
-int pop1() {
-
-    if (top1 == NULL) {
-        
-        return;
-    }
-
-
-    struct Node1* temp1 = top1;
-    int temp = top1->val;
-
-    top1 = top1->next;
-
-
-    free(temp1);
-
-    return temp;
-}
-int pop2() {
-
-    if (top2 == NULL) {
-        
+int pop(Node** top_ptr) {
+    if (*top_ptr == NULL) {
         return -1;
     }
-
-
-    struct Node2* temp1 = top2;
-    int temp = top2->val;
-
-    top2 = top2->next;
-
-
-    free(temp1);
-
-    return temp;
+    Node* temp = *top_ptr;
+    int val = temp->val;
+    *top_ptr = (*top_ptr)->next;
+    free(temp);
+    return val;
 }
 
-int peek()
-{
-
-    if (top == NULL) {
-       
+int peek(Node* top_ptr) {
+    if (top_ptr == NULL) {
         return -1;
     }
-
-
-    struct Node* temp1 = top;
-    int temp = top->val;
-
-
-    return temp;
+    return top_ptr->val;
 }
-int peek1()
-{
 
-    if (top1 == NULL) {
-
-        return -1;
+int findmax(Node** top_ptr) {
+    int max_val = -5555555;
+    Node* current = *top_ptr;
+    while (current != NULL) {
+        if (current->val > max_val) {
+            max_val = current->val;
+        }
+        current = current->next;
     }
-
-
-    struct Node1* temp1 = top1;
-    int temp = top1->val;
-
-
-    return temp;
+    return max_val;
 }
-
-int peek2()
-{
-
-    if (top2 == NULL) {
-
-        return -1;
-    }
-
-
-    struct Node2* temp1 = top2;
-    int temp = top2->val;
-
-
-    return temp;
-}
-
-
-int findmax() {
-    int temp;
-    int mx = -3543345;
-    while (top != NULL)
-    {
-        temp = pop();
-        if (mx < temp)
-            mx = temp;
-    }
-    return mx;
-}
-
 
 int main() {
     int data = 0;
-    printf("Enter the first stack(-1 to end)\n");
-        while (data != -1)
-        {
-            scanf("%d", &data);
-            push(data);
+
+    printf("Enter the first stack (-1 to end):\n");
+    while (1) {
+        scanf("%d", &data);
+        if (data == -1) break;
+        push(&top, data);
+    }
+
+    int max_val = findmax(&top);
+    if (max_val != -5555555) {
+        printf("Max element: %d\n", max_val);
+    }
+    else {
+        printf("The stack is empty\n");
+    }
+
+    printf("Enter the second descending stack (-1 to end):\n");
+    data = 0;
+    while (1) {
+        scanf("%d", &data);
+        if (data == -1) break;
+        if (peek(top) <= data || peek(top) == -1) {
+            push(&top, data);
         }
-        data = pop();
-        data = findmax();
-        if(data != -3543345)
-            printf("max element: %d\n", data);
-        else
-            printf("the stack is empty\n");
-            printf("Enter the second decending stack(-1 to end)\n");
-            while (data != -1)
-            {
-                scanf("%d", &data);
-                if (peek() <= data || peek() == -1 || data == -1)
-                    push(data);
-                else
-                    printf("the stack should be descending enter another number\n");
-            }
-            data = pop();
-            data = 0;
-            printf("Enter the third decending stack(-1 to end)\n");
-            while (data != -1)
-            {
-                scanf("%d", &data);
-                if (peek1() <= data || peek1() == -1 || data == -1)
-                    push1(data);
-                else
-                    printf("the stack should be descending enter another number\n");
-            }
-            data = pop1();
-            while (top != NULL && top1 != NULL)
-            {
-                if (peek() > peek1())
-                    push2(pop());
-                else
-                    push2(pop1());
-            }
-            if (top == NULL)
-                while (peek1() != -1)
-                    push2(pop1());
-            else
-                while (peek() != -1)
-                    push2(pop());
-            printf("final stack:");
-            while (peek2() != -1) {
-                data = pop2();
-                printf(" %d", data);
-            }
-          return 0;
+        else {
+            printf("The stack should be descending. Enter another number.\n");
+        }
+    }
+
+    printf("Enter the third descending stack (-1 to end):\n");
+    data = 0;
+    while (1) {
+        scanf("%d", &data);
+        if (data == -1) break;
+        if (peek(top1) <= data || peek(top1) == -1) {
+            push(&top1, data);
+        }
+        else {
+            printf("The stack should be descending. Enter another number.\n");
+        }
+    }
+
+
+    while (peek(top) != -1 && peek(top1) != -1) {
+        if (peek(top) > peek(top1)) {
+            push(&top2, pop(&top));
+        }
+        else {
+            push(&top2, pop(&top1));
+        }
+    }
+
+    while (peek(top) != -1) {
+        push(&top2, pop(&top));
+    }
+    while (peek(top1) != -1) {
+        push(&top2, pop(&top1));
+    }
+
+
+    printf("Final stack:");
+    while (peek(top2) != -1) {
+        data = pop(&top2);
+        printf(" %d", data);
+    }
+    printf("\n");
+
+    return 0;
 }
